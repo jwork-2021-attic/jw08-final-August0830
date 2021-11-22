@@ -20,15 +20,15 @@ public class Main extends JFrame implements KeyListener {
     private AsciiPanel terminal;
     private Screen screen;
 
-    public Main() {
+    public Main() throws InterruptedException {
         super();
         terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);
         add(terminal);
         pack();
         screen = new WorldScreen();
-        addKeyListener(this);
-        repaint();
-
+        //addKeyListener(this);
+        
+ 
     }
 
     @Override
@@ -54,10 +54,15 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Main app = new Main();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
+        while(true){
+            app.repaint();
+            //System.out.println("paint");
+            Thread.sleep(500);
+        }
     }
 
 }
