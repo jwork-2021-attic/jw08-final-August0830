@@ -30,10 +30,9 @@ public class WorldScreen implements Screen {
                     Wall w = new Wall(world);
                     world.put(w,j,i);
                 } else {            //无颜色输出
-                    //System.out.print(" ");
+                    
                 }
             }
-            //System.out.println();//每行结束换行
         }
 
             
@@ -64,21 +63,6 @@ public class WorldScreen implements Screen {
         }
         return null;
     }
-    private void mazeMove(KeyEvent key){
-        int keycode = key.getKeyCode();
-        int[][] action ={{-1,0},{0,-1},{1,0},{0,1}};//left up right down
-        int[] step = action[keycode-37];
-        int x = hero.getX();
-        int y = hero.getY();
-        int nxtX = step[0]+hero.getX();
-        int nxtY = step[1]+hero.getY();
-        if(nxtX>=0 && nxtX < World.WIDTH
-        && nxtY>=0 && nxtY < World.HEIGHT
-        &&!(world.get(nxtX,nxtY) instanceof Wall)){//  
-            hero.moveTo(nxtX, nxtY);
-            world.put(new Trace(world,x,y),x,y);
-        }
-    }
     @Override
     public void displayOutput(AsciiPanel terminal) {
 
@@ -96,7 +80,7 @@ public class WorldScreen implements Screen {
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         
-        mazeMove(key);
+
         return this;
     }
 

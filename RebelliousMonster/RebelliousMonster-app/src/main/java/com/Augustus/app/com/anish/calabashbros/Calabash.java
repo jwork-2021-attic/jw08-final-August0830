@@ -6,8 +6,8 @@ public class Calabash extends Creature implements Comparable<Calabash> {
 
     private int rank;
 
-    public Calabash(Color color, int rank, World world) {
-        super(color, (char) 2, world);
+    public Calabash(Color color, int rank, World world,int hp) {
+        super(color, (char) 2, world,hp);
         this.rank = rank;
     }
 

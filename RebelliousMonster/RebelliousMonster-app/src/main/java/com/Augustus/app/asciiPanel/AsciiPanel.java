@@ -387,8 +387,8 @@ public class AsciiPanel extends JPanel {
 
     private void loadGlyphs() {
         try {
-            System.out.println(AsciiPanel.class.getClassLoader().getResource("talryth_square_15x15.png"));
-            glyphSprite = ImageIO.read(AsciiPanel.class.getClassLoader().getResource("talryth_square_15x15.png"));
+            System.out.println(AsciiPanel.class.getClassLoader().getResource("com/Augustus/app/resources/talryth_square_15x15.png"));
+            glyphSprite = ImageIO.read(AsciiPanel.class.getClassLoader().getResource("com/Augustus/app/resources/talryth_square_15x15.png"));
         } catch (IOException e) {
             System.err.println("loadGlyphs(): " + e.getMessage());
         }

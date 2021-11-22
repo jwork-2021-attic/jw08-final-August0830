@@ -28,5 +28,10 @@ public class World {
     public void put(Thing t, int x, int y) {
         this.tiles[x][y].setThing(t);
     }
-
+    public int getHeight(){
+        return this.HEIGHT;
+    }
+    public int getWidth(){
+        return this.WIDTH;
+    }
 }
