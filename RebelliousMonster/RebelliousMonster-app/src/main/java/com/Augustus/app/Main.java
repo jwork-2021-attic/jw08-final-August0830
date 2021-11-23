@@ -26,7 +26,7 @@ public class Main extends JFrame implements KeyListener {
         add(terminal);
         pack();
         screen = new WorldScreen();
-        //addKeyListener(this);
+        addKeyListener(this);
         
  
     }

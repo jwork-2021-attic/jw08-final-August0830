@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.Augustus.app.asciiPanel.AsciiPanel;
-import com.Augustus.app.com.anish.calabashbros.Calabash;
 import com.Augustus.app.com.anish.calabashbros.Goblin;
+import com.Augustus.app.com.anish.calabashbros.Monster;
+import com.Augustus.app.com.anish.calabashbros.Stone;
 import com.Augustus.app.com.anish.calabashbros.Wall;
 import com.Augustus.app.com.anish.calabashbros.World;
 
 public class WorldScreen implements Screen {
 
     private World world;
-    private Calabash hero;
+    private Monster monster;
     public static final int GOBCNT = 10;
     String[] sortSteps;
 
@@ -29,8 +30,7 @@ public class WorldScreen implements Screen {
             for (int j = 0; j < width; j++) {
                 if (data[j][i] == -1) {//有颜色输出
                     //System.out.print("*");
-                    Wall w = new Wall(world);
-                    world.put(w,j,i);
+                    world.put(new Stone(world,j,i),j,i);
                 } else {            //无颜色输出
                     
                 }
@@ -51,6 +51,7 @@ public class WorldScreen implements Screen {
             threads.get(i).start();
         }
         
+        this.monster = new Monster(world,50);
         // for (int i = 0; i < threads.size(); i++) {
         //     threads.get(i).start();
         // }
@@ -72,8 +73,19 @@ public class WorldScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
+        if(key.getKeyCode()>=37 && key.getKeyCode()<=40)
+            monster.move(key);//get info about moving
+        else if(key.getKeyCode()==KeyEvent.VK_W ||
+        key.getKeyCode()==KeyEvent.VK_A ||
+        key.getKeyCode()==KeyEvent.VK_S ||
+        key.getKeyCode()==KeyEvent.VK_D){
+            if(monster.isEmpty())
+                monster.getStone(key);
+            else
+                monster.pushStone(key);
+        }
+            
         
-
         return this;
     }
 

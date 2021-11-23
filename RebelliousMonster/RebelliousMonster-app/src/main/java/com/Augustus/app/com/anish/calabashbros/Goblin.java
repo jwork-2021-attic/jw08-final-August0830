@@ -16,7 +16,7 @@ public class Goblin extends Creature implements Runnable {
         // Color color = new Color(red,green,blue);
         super(color, (char) 1, world, 50);
         // TODO Auto-generated constructor stub
-        final Random r = new Random();
+        Random r = new Random();
 
         do {
             curX = r.nextInt(world.getWidth());
