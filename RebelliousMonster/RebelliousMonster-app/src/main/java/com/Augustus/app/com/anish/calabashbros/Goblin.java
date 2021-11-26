@@ -8,13 +8,13 @@ public class Goblin extends Creature implements Runnable {
     int curX;
     int curY;
 
-    public Goblin(final Color color, final World world) {
+    public Goblin(Color color, World world,int hp) {
         // Random r = new Random();
         // int red = (r.nextInt(255)+255)/2;
         // int blue = (r.nextInt(255)+255)/2;
         // int green = (r.nextInt(255)+255)/2;
         // Color color = new Color(red,green,blue);
-        super(color, (char) 1, world, 50);
+        super(color, (char) 1, world, hp);
         // TODO Auto-generated constructor stub
         Random r = new Random();
 
@@ -51,12 +51,11 @@ public class Goblin extends Creature implements Runnable {
 
         for (int i = 0; i < 4; ++i) {
             int xPos = curX + xMove[i];
-            int yPos = curY + yMove[i];
-            // if (Class.forName("Monster").isInstance(world.get(xPos, yPos))) {
-            // ((Creature) world.get(xPos, yPos)).getHurt(attackValue);
-
-            // }
-        }
+            int yPos = curY + yMove[i];  
+            if(world.get(xPos,yPos) instanceof Monster){
+                ((Monster)world.get(xPos,yPos)).getHurt(attackValue);
+            }
+        }//如果只是在前进路上检查就不会攻击从其他方向靠近的monster
 
     }
 
@@ -78,17 +77,17 @@ public class Goblin extends Creature implements Runnable {
                     nextX = curX + xMove[dir];
                     nextY = curY + yMove[dir];
                     //System.out.println("dir "+dir+" x "+nextX+" y "+nextY);
+                    
                 }
-                 moveTo(nextX, nextY);
-
-                // attack(r.nextInt(100));
+                moveTo(nextX, nextY);
+                attack(r.nextInt(50));
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-
+        world.put(new Floor(world),curX,curY);
     }
 
 }

@@ -44,7 +44,7 @@ public class WorldScreen implements Screen {
             int red = (r.nextInt(255)+255)/2;
             int blue = (r.nextInt(255)+255)/2;
             int green = (r.nextInt(255)+255)/2;
-            Goblin gob = new Goblin(new Color(red,green,blue), world);
+            Goblin gob = new Goblin(new Color(red,green,blue), world,50);
             // hero = new Calabash(new Color(red,green,blue),1,world);
             // world.put(hero,0,startList.get(r.nextInt(startList.size())));
             threads.add(new Thread(gob));
@@ -52,9 +52,8 @@ public class WorldScreen implements Screen {
         }
         
         this.monster = new Monster(world,50);
-        // for (int i = 0; i < threads.size(); i++) {
-        //     threads.get(i).start();
-        // }
+        Thread LocalMonster = new Thread(monster);
+        LocalMonster.start();
 
     }
 
@@ -73,7 +72,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public Screen respondToUserInput(KeyEvent key) {
-        if(key.getKeyCode()>=37 && key.getKeyCode()<=40)
+        if(monster.isAlive() && key.getKeyCode()>=37 && key.getKeyCode()<=40)
             monster.move(key);//get info about moving
         else if(key.getKeyCode()==KeyEvent.VK_W ||
         key.getKeyCode()==KeyEvent.VK_A ||
@@ -84,6 +83,8 @@ public class WorldScreen implements Screen {
             else
                 monster.pushStone(key);
         }
+        // else if(!monster.isAlive())
+        //     monster = null;
             
         
         return this;

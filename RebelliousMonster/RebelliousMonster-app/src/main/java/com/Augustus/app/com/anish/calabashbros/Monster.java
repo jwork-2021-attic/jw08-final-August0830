@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-public class Monster extends Creature {
+public class Monster extends Creature implements Runnable{
 
     private int posX;
     private int posY;
@@ -83,6 +83,28 @@ public class Monster extends Creature {
         stone=null;//发射的时候不影响怪兽重新拿到石头
         weapon.run();
 
+	}
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        while(hp>0);// System.out.println("monster "+hp);
+        world.put(new Floor(world),posX,posY);
+    }
+
+    @Override
+    public synchronized void getHurt(int attackedValue){
+        hp-=attackedValue;
+        System.out.println("Monster hp "+this.hp);
+    }
+
+	public boolean isAlive() {
+        if(hp<=0)
+        {
+            world.put(new Floor(world),posX,posY);
+            return false;
+        }    
+        return true;
 	}
 
 }

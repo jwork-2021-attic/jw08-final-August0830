@@ -32,7 +32,7 @@ public class Stone extends Thing implements Runnable {
 
     private synchronized void moveTo(int x, int y) {
         world.put(this, x, y);
-        if(posX!=monster.getX() || posY!=monster.getY())
+        if (posX != monster.getX() || posY != monster.getY())
             world.put(new Floor(world), posX, posY);
         // System.out.println("stone x "+posX+" y "+posY+
         // "monster x "+monster.getX()+" y "+monster.getY());
@@ -47,12 +47,20 @@ public class Stone extends Thing implements Runnable {
         int nxtX = posX + dir[0];
         int nxtY = posY + dir[1];
         while (nxtX >= 0 && nxtX < World.WIDTH && nxtY >= 0 && nxtY < World.HEIGHT
-                && (world.get(nxtX, nxtY) instanceof Floor)) {            
-            
+                && (world.get(nxtX, nxtY) instanceof Floor)) {
+
             moveTo(nxtX, nxtY);
             nxtX = posX + dir[0];
             nxtY = posY + dir[1];
-            
+            try {
+                Thread.sleep(80);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        if(world.get(nxtX, nxtY) instanceof Goblin){
+            ((Goblin)world.get(nxtX,nxtY)).getHurt(150);
         }
     }
 

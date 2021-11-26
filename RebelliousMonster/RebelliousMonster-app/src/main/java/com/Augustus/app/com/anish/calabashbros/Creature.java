@@ -13,7 +13,8 @@ public class Creature extends Thing {
         this.world.put(this, xPos, yPos);
     }
 
-    public void getHurt(int attackedValue){
+    public synchronized void getHurt(int attackedValue){
         hp-=attackedValue;
+        //System.out.println("hp "+this.hp);
     }
 }
