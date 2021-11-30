@@ -57,15 +57,17 @@ public class WorldScreen implements Screen {
         }
 
         Monster monster = new Monster(world, 50);
+        Thread LocalMonster = new Thread(monster);
+        LocalMonster.start();
         try {
             pipe = new PipedOutputStream(monster.pipe);
+            monster.pipe.connect(pipe);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        Thread LocalMonster = new Thread(monster);
-        LocalMonster.start();
+        
 
     }
 
