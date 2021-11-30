@@ -28,7 +28,7 @@ public class WorldScreen implements Screen {
         int width = 40;
         int height = 20;
         MapGenerator mapgen = new MapGenerator(width, height);
-        System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+        System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
         int[][] data = mapgen
                 .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
         for (int i = 0; i < height; i++) {
