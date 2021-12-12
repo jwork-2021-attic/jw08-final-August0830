@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
 
 import com.Augustus.app.com.anish.screen.ByteUtil;
 
@@ -13,10 +14,11 @@ public class Monster extends Creature implements Runnable {
     private int posX;
     private int posY;
     private Stone stone;
-    public PipedInputStream pipe;
-
-    public Monster(World world, int hp) {
+    BlockingQueue<KeyEvent> keyMessage;
+    
+    public Monster(World world, int hp, BlockingQueue<KeyEvent> keyMessage) {
         super(Color.WHITE, (char) 2, world, hp);
+        this.keyMessage=keyMessage;
         // TODO Auto-generated constructor stub
         Random r = new Random();
 
@@ -97,23 +99,27 @@ public class Monster extends Creature implements Runnable {
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        while (hp > 0) {
-            byte[] buf = null;
-            try {
-                pipe.read(buf);
-                KeyEvent key = (KeyEvent)(ByteUtil.toObject(buf));
+        // System.out.println("monster "+hp);
+        while(hp>0)
+        {
+            KeyEvent key;
+            while((key=keyMessage.poll())!=null){
                 int code = key.getKeyCode();
                 if(code == KeyEvent.VK_W || code == KeyEvent.VK_A
-                || code == KeyEvent.VK_S || code == KeyEvent.VK_D)
-                    pushStone(key);
-                else
-                    getStone(key);
-            } catch (IOException | ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                || code == KeyEvent.VK_S || code == KeyEvent.VK_D){
+                    if(stone!=null)
+                        pushStone(key);
+                    else
+                        getStone(key);
+                }
+                else if(code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN
+                || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_RIGHT){
+                    move(key);
+                }       
             }
-        };// System.out.println("monster "+hp);
-        world.put(new Floor(world),posX,posY);
+        }
+        System.out.println("Monster dead!");
+        world.put(new Floor(world),posX,posY);//dead and clean
     }
 
     @Override

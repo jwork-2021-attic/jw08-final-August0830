@@ -2,22 +2,21 @@ package com.Augustus.app.com.anish.screen;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.Augustus.app.asciiPanel.AsciiPanel;
 import com.Augustus.app.com.anish.calabashbros.Goblin;
 import com.Augustus.app.com.anish.calabashbros.Monster;
 import com.Augustus.app.com.anish.calabashbros.Stone;
-import com.Augustus.app.com.anish.calabashbros.Wall;
 import com.Augustus.app.com.anish.calabashbros.World;
 
 public class WorldScreen implements Screen {
 
     private World world;
-    public PipedOutputStream pipe;
+    BlockingQueue<KeyEvent> keyMessage;
     public static final int GOBCNT = 10;
     String[] sortSteps;
     ArrayList<Thread> gobThreads;
@@ -43,7 +42,7 @@ public class WorldScreen implements Screen {
         }
 
         gobThreads = new ArrayList<Thread>();
-
+        keyMessage = new LinkedBlockingQueue<KeyEvent>();
         Random r = new Random();
         for (int i = 0; i < GOBCNT; ++i) {
             int red = (r.nextInt(255) + 255) / 2;
@@ -56,22 +55,12 @@ public class WorldScreen implements Screen {
             gobThreads.get(i).start();
         }
 
-        Monster monster = new Monster(world, 50);
+        Monster monster = new Monster(world, 50,keyMessage);
         Thread LocalMonster = new Thread(monster);
         LocalMonster.start();
-        try {
-            pipe = new PipedOutputStream(monster.pipe);
-            monster.pipe.connect(pipe);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        
 
     }
 
-    
     @Override
     public void displayOutput(AsciiPanel terminal) {
 
@@ -87,9 +76,8 @@ public class WorldScreen implements Screen {
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         try {
-            pipe.write(ByteUtil.toByteArray(key));
-            pipe.flush();
-        } catch (IOException e) {
+            keyMessage.put(key);
+        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
