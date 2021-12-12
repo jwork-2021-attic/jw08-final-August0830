@@ -45,7 +45,7 @@ public class Goblin extends Creature implements Runnable {
     }
 
     // checkout arount and attack
-    private synchronized void attack(int attackValue) {
+    public synchronized void attack(int attackValue) {
         int[] xMove = { 1, 0, -1, 0 };
         int[] yMove = { 0, 1, 0, -1 };
 
@@ -57,6 +57,10 @@ public class Goblin extends Creature implements Runnable {
             }
         }//如果只是在前进路上检查就不会攻击从其他方向靠近的monster
 
+    }
+
+    public Boolean isAlive(){
+        return hp>0;
     }
 
     @Override

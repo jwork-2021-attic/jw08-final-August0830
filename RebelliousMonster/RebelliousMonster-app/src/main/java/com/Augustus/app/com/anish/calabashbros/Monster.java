@@ -2,12 +2,9 @@ package com.Augustus.app.com.anish.calabashbros;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.io.PipedInputStream;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-import com.Augustus.app.com.anish.screen.ByteUtil;
 
 public class Monster extends Creature implements Runnable {
 
@@ -15,10 +12,10 @@ public class Monster extends Creature implements Runnable {
     private int posY;
     private Stone stone;
     BlockingQueue<KeyEvent> keyMessage;
-    
-    public Monster(World world, int hp, BlockingQueue<KeyEvent> keyMessage) {
+  
+    public Monster(World world, int hp) {
         super(Color.WHITE, (char) 2, world, hp);
-        this.keyMessage=keyMessage;
+        
         // TODO Auto-generated constructor stub
         Random r = new Random();
 
@@ -28,6 +25,10 @@ public class Monster extends Creature implements Runnable {
         } while (posX < 0 || posY < 0 || !(world.get(posX, posY) instanceof Floor));
         // posX=5; posY=14;
         this.world.put(this, posX, posY);
+    }
+
+    public void setReceiver(BlockingQueue<KeyEvent> keyMessage){
+        this.keyMessage=keyMessage;
     }
 
     public synchronized void move(KeyEvent key) {

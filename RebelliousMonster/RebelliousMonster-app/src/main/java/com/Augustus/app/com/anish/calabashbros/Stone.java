@@ -19,9 +19,11 @@ public class Stone extends Thing implements Runnable {
         super(AsciiPanel.cyan, (char) 177, world);
     }
 
-    public void getOccupied(Monster mon) {
-        this.monster = mon;
-        world.put(new Floor(world), posX, posY);
+    public synchronized void getOccupied(Monster mon) {
+        if(monster==null){
+            this.monster = mon;
+            world.put(new Floor(world), posX, posY);
+        }
     }
 
     public void setDir(int[] is) {
@@ -40,10 +42,14 @@ public class Stone extends Thing implements Runnable {
         posY = y;
     }
 
+    public Monster master(){
+        return monster;
+    } 
+    
     @Override
     public void run() {
         // TODO Auto-generated method stub
-
+        this.monster = null;
         int nxtX = posX + dir[0];
         int nxtY = posY + dir[1];
         while (nxtX >= 0 && nxtX < World.WIDTH && nxtY >= 0 && nxtY < World.HEIGHT

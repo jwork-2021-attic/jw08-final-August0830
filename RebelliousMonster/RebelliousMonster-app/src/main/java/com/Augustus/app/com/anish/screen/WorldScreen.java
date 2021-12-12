@@ -55,7 +55,8 @@ public class WorldScreen implements Screen {
             gobThreads.get(i).start();
         }
 
-        Monster monster = new Monster(world, 50,keyMessage);
+        Monster monster = new Monster(world, 50);
+        monster.setReceiver(keyMessage);
         Thread LocalMonster = new Thread(monster);
         LocalMonster.start();
 

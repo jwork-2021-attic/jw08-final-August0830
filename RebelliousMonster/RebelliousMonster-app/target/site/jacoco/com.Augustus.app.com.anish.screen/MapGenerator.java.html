@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RebelliousMonster-app</a> &gt; <a href="index.source.html" class="el_package">com.Augustus.app.com.anish.screen</a> &gt; <span class="el_source">MapGenerator.java</span></div><h1>MapGenerator.java</h1><pre class="source lang-java linenums">package com.Augustus.app.com.anish.screen;
+
+import java.io.IOException;
+import java.net.URL;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+public class MapGenerator {
+    int Width;
+    int Height;
+    public MapGenerator(int Width,int Height)
+<span class="nc" id="L12">    {</span>
+<span class="nc" id="L13">        this.Width=Width;</span>
+<span class="nc" id="L14">        this.Height=Height;</span>
+<span class="nc" id="L15">    }</span>
+    public int[][] getData(URL path) {
+        //创建一个二维数组，用来存放图像每一个像素位置的颜色值
+        
+<span class="nc" id="L19">        int[][] data = new int[Width][Height];</span>
+        try {
+            //获取图像资源，转成BufferedImage对象
+<span class="nc" id="L22">            java.awt.image.BufferedImage bimg = ImageIO.read(new File(path.getFile()));</span>
+            
+            
+            //以高度为范围，逐列扫描图像，存进数组对应位置
+<span class="nc bnc" id="L26" title="All 2 branches missed.">            for (int i = 0; i &lt; bimg.getWidth(); i++) {</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">                for (int j = 0; j &lt; bimg.getHeight(); j++) {</span>
+<span class="nc" id="L28">                    data[3+i][2+j] = bimg.getRGB(i, j);//得到的是sRGB值，4字节</span>
+                }
+            }
+<span class="nc bnc" id="L31" title="All 2 branches missed.">            for(int i=0;i&lt;Width;++i)</span>
+            {
+<span class="nc" id="L33">                data[i][0]=-1;</span>
+<span class="nc" id="L34">                data[i][Height-1]=-1;</span>
+            }    
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            for(int i=0;i&lt;Height;++i)</span>
+            {
+<span class="nc" id="L38">                data[0][i]=-1;</span>
+<span class="nc" id="L39">                data[Width-1][i]=-1;</span>
+            }
+            //System.out.println(&quot;Width: &quot;+bimg.getWidth()+&quot;Height: &quot;+bimg.getHeight());
+            //将数组旋转90°输出，实现逐行输出图像
+            
+<span class="nc" id="L44">        } catch (IOException e) {</span>
+<span class="nc" id="L45">            e.printStackTrace();</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">        return data;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
