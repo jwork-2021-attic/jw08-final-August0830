@@ -27,11 +27,17 @@ public class AppendableObjectOutputStream extends ObjectOutputStream {
 
     @Override
     protected void writeStreamHeader() throws IOException {
-        if (!this.initialized || this.append) return;
-        if (dout != null) {
-            dout.writeShort(STREAM_MAGIC);
-            dout.writeShort(STREAM_VERSION);
-        }
+      // do not write a header, but reset the handle list
+      reset();
     }
+
+    // @Override
+    // protected void writeStreamHeader() throws IOException {
+    //     if (!this.initialized || this.append) return;
+    //     if (dout != null) {
+    //         dout.writeShort(STREAM_MAGIC);
+    //         dout.writeShort(STREAM_VERSION);
+    //     }
+    // }
 
 }
