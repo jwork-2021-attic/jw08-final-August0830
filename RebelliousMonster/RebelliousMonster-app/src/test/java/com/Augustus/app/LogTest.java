@@ -2,9 +2,13 @@ package com.Augustus.app;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,36 +17,45 @@ import java.util.Scanner;
 import com.Augustus.app.com.anish.screen.ByteUtil;
 
 public class LogTest {
-    public static void main(String[] args) throws InterruptedException, IOException {
-        //ArrayList<Thread> threads = new ArrayList<Thread>();
+    public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
+        // ArrayList<Thread> threads = new ArrayList<Thread>();
+        output(1);
         input();
-        BufferedInputStream fis = new BufferedInputStream(new FileInputStream("./log.txt"));
-        Scanner sc = new Scanner(fis);
-        sc.useDelimiter("\n");
-        while(sc.hasNext()){
-
-        }
-        sc.close();
     }
 
-    static void input() throws InterruptedException, IOException {
+    static void input() throws FileNotFoundException, IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./log.txt"));
+        Object ob;
+        
+        while(true){
+            try{
+                ob = ois.readObject();
+                ArrayList<Counter> counter = (ArrayList<Counter>)ob;
+                for(Counter c:counter){
+                    c.showVal();
+                }
+            }catch(EOFException eofex){
+                break;
+            }
+        }
+        
+    }
+
+    static void output(int n) throws InterruptedException, IOException {
         ArrayList<Counter> counters = new ArrayList<Counter>();
-        int n=3;
         for (int i = 0; i < n; ++i) {
             counters.add(new Counter(i+1));
             // threads.add(new Thread(counters.get(i)));
             counters.get(i).start();
         }
 
-        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream("./log.txt"));
-        byte[] logBuffer = ByteUtil.toByteArray(counters);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("./log.txt"));
+       
         Long start = System.currentTimeMillis();
         while(System.currentTimeMillis()-start<=1000*n){
-            fos.write(logBuffer);
-            fos.write(ByteUtil.toByteArray("\n"));
+            oos.writeObject(counters);
             for(int i=0;i<n;++i)
                 counters.get(i).showVal();
-            logBuffer = ByteUtil.toByteArray(counters);
             Thread.sleep(500);
         }
 
@@ -51,7 +64,7 @@ public class LogTest {
             System.out.println(i+1+" counter is stop:"+counters.get(i).isInterrupted());
         }
        
-        fos.close();
+        oos.close();
     }
 }
 
@@ -89,7 +102,7 @@ class Counter extends Thread implements Serializable {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                //e.printStackTrace();
                 break;
             }
         }
