@@ -23,6 +23,7 @@ public class Main extends JFrame implements KeyListener {
     public Main() throws InterruptedException {
         super();
         terminal = new AsciiPanel(World.WIDTH, World.HEIGHT, AsciiFont.TALRYTH_15_15);
+        //屏幕设置 ui可以在这里更改 以及屏幕大小
         add(terminal);
         pack();
         screen = new WorldScreen();

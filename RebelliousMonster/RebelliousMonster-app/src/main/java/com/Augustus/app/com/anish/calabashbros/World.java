@@ -34,4 +34,8 @@ public class World {
     public int getWidth(){
         return this.WIDTH;
     }
+
+    public boolean inside(int x,int y){
+        return x>=0 && x<this.WIDTH && y>=0 && y<this.HEIGHT;
+    }
 }

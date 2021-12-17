@@ -52,7 +52,7 @@ public class Goblin extends Creature implements Runnable {
         for (int i = 0; i < 4; ++i) {
             int xPos = curX + xMove[i];
             int yPos = curY + yMove[i];  
-            if(world.get(xPos,yPos) instanceof Monster){
+            if(world.inside(xPos, yPos) && world.get(xPos,yPos) instanceof Monster){
                 ((Monster)world.get(xPos,yPos)).getHurt(attackValue);
             }
         }//如果只是在前进路上检查就不会攻击从其他方向靠近的monster

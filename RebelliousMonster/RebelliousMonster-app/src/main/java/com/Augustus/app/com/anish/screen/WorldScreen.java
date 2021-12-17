@@ -2,12 +2,14 @@ package com.Augustus.app.com.anish.screen;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.Augustus.app.asciiPanel.AsciiPanel;
+import com.Augustus.app.com.anish.calabashbros.Floor;
 import com.Augustus.app.com.anish.calabashbros.Goblin;
 import com.Augustus.app.com.anish.calabashbros.Monster;
 import com.Augustus.app.com.anish.calabashbros.Signal;
@@ -20,31 +22,44 @@ public class WorldScreen implements Screen {
     BlockingQueue<KeyEvent> keyMessage;
     public static final int GOBCNT = 10;
     String[] sortSteps;
-    ArrayList<Thread> gobThreads;
+    ArrayList<Goblin> gobThreads;
+    Monster localMonster;
     Signal sig;
+    MapGenerator mapgen;
 
     // ArrayList<Thread>
     public WorldScreen() {
         world = new World();
         int width = 40;
         int height = 20;
-        MapGenerator mapgen = new MapGenerator(width, height);
-        System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
-        int[][] data = mapgen
-                .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (data[j][i] == -1) {// 有颜色输出
-                    // System.out.print("*");
-                    world.put(new Stone(world, j, i), j, i);
-                } else { // 无颜色输出
-
-                }
+        mapgen = new MapGenerator(width, height);
+        System.out.println("load previous map?");
+        int load=0;
+        try {
+            load = System.in.read();
+            System.out.print(load);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if(load==49){
+            try {
+                mapgen.resetMap(world);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
+        else{
+            System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
+        // int[][] data = mapgen
+        //         .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+            mapgen.iniMap(world, 
+            WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+        }
 
-        sig=new Signal();
-        gobThreads = new ArrayList<Thread>();
+        sig = new Signal();
+        gobThreads = new ArrayList<Goblin>();
         keyMessage = new LinkedBlockingQueue<KeyEvent>();
         Random r = new Random();
         for (int i = 0; i < GOBCNT; ++i) {
@@ -55,16 +70,14 @@ public class WorldScreen implements Screen {
             gob.setStopSig(sig);
             // hero = new Calabash(new Color(red,green,blue),1,world);
             // world.put(hero,0,startList.get(r.nextInt(startList.size())));
-            gobThreads.add(new Thread(gob));
-            gobThreads.get(i).start();
+            gobThreads.add(gob);
+            new Thread(gob).start();
         }
 
-        
-        Monster monster = new Monster(world, 50);
-        monster.setStopSig(sig);
-        monster.setReceiver(keyMessage);
-        Thread LocalMonster = new Thread(monster);
-        LocalMonster.start();
+        localMonster = new Monster(world, 50);
+        localMonster.setStopSig(sig);
+        localMonster.setReceiver(keyMessage);
+        new Thread(localMonster).start();
 
     }
 
@@ -83,12 +96,27 @@ public class WorldScreen implements Screen {
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         try {
-            if(key.getKeyCode()==KeyEvent.VK_SPACE){
-                if(sig.getStopBit()==false)
+            if (key.getKeyCode() == KeyEvent.VK_SPACE) {
+                if (sig.getStopBit() == false) {
                     sig.setStopBit(true);
-                else{
-                    for(Thread t:gobThreads)
-                        t.run();
+                    try {
+                        mapgen.saveMap(world);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                } else {
+                    sig.setStopBit(false);
+                    try {
+                        mapgen.resetMap(world);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    //System.out.println((world.get(localMonster.getX(),localMonster.getY())instanceof Floor));
+                    for(Goblin t:gobThreads)
+                        new Thread(t).start();
+                    new Thread(localMonster).start();
                 }
             }
 

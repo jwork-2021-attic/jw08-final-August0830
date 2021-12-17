@@ -13,10 +13,12 @@ public class Stone extends Thing implements Runnable {
         super(AsciiPanel.cyan, (char) 177, world);
         this.posX = posX;
         this.posY = posY;
+        monster=null;
     }
 
     public Stone(World world) {
         super(AsciiPanel.cyan, (char) 177, world);
+        monster=null;
     }
 
     public synchronized void getOccupied(Monster mon) {
@@ -34,8 +36,10 @@ public class Stone extends Thing implements Runnable {
 
     private synchronized void moveTo(int x, int y) {
         world.put(this, x, y);
-        if (posX != monster.getX() || posY != monster.getY())
+        if (posX != monster.getX() || posY != monster.getY()){
             world.put(new Floor(world), posX, posY);
+        }
+            
         // System.out.println("stone x "+posX+" y "+posY+
         // "monster x "+monster.getX()+" y "+monster.getY());
         posX = x;
@@ -49,12 +53,11 @@ public class Stone extends Thing implements Runnable {
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        this.monster = null;
         int nxtX = posX + dir[0];
         int nxtY = posY + dir[1];
         while (nxtX >= 0 && nxtX < World.WIDTH && nxtY >= 0 && nxtY < World.HEIGHT
                 && (world.get(nxtX, nxtY) instanceof Floor)) {
-
+            
             moveTo(nxtX, nxtY);
             nxtX = posX + dir[0];
             nxtY = posY + dir[1];
@@ -65,8 +68,11 @@ public class Stone extends Thing implements Runnable {
                 e.printStackTrace();
             }
         }
-        if(world.get(nxtX, nxtY) instanceof Goblin){
-            ((Goblin)world.get(nxtX,nxtY)).getHurt(150);
+
+        this.monster = null;
+        if(nxtX >= 0 && nxtX < World.WIDTH && nxtY >= 0 && nxtY < World.HEIGHT
+        && world.get(nxtX, nxtY) instanceof Goblin){
+            ((Goblin)world.get(nxtX,nxtY)).getHurt(150);   
         }
     }
 
