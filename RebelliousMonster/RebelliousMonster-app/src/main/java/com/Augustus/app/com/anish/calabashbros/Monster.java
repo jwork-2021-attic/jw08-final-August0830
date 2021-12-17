@@ -5,17 +5,16 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-
 public class Monster extends Creature implements Runnable {
 
     private int posX;
     private int posY;
     private Stone stone;
     BlockingQueue<KeyEvent> keyMessage;
-  
+
     public Monster(World world, int hp) {
         super(Color.WHITE, (char) 2, world, hp);
-        
+
         // TODO Auto-generated constructor stub
         Random r = new Random();
 
@@ -27,8 +26,8 @@ public class Monster extends Creature implements Runnable {
         this.world.put(this, posX, posY);
     }
 
-    public void setReceiver(BlockingQueue<KeyEvent> keyMessage){
-        this.keyMessage=keyMessage;
+    public void setReceiver(BlockingQueue<KeyEvent> keyMessage) {
+        this.keyMessage = keyMessage;
     }
 
     public synchronized void move(KeyEvent key) {
@@ -101,41 +100,40 @@ public class Monster extends Creature implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
         // System.out.println("monster "+hp);
-        while(hp>0)
-        {
+        while (hp > 0 && !sig.getStopBit()) {
             KeyEvent key;
-            while((key=keyMessage.poll())!=null){
+            while ((key = keyMessage.poll()) != null) {
                 int code = key.getKeyCode();
-                if(code == KeyEvent.VK_W || code == KeyEvent.VK_A
-                || code == KeyEvent.VK_S || code == KeyEvent.VK_D){
-                    if(stone!=null)
+                if (code == KeyEvent.VK_W || code == KeyEvent.VK_A || code == KeyEvent.VK_S || code == KeyEvent.VK_D) {
+                    if (stone != null)
                         pushStone(key);
                     else
                         getStone(key);
-                }
-                else if(code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN
-                || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_RIGHT){
+                } else if (code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_LEFT
+                        || code == KeyEvent.VK_RIGHT) {
                     move(key);
-                }       
+                }
             }
         }
-        System.out.println("Monster dead!");
-        world.put(new Floor(world),posX,posY);//dead and clean
+        if (hp <= 0) {
+            System.out.println("Monster dead!");
+            world.put(new Floor(world), posX, posY);// dead and clean
+        }
+
     }
 
     @Override
-    public synchronized void getHurt(int attackedValue){
-        hp-=attackedValue;
-        System.out.println("Monster hp "+this.hp);
+    public synchronized void getHurt(int attackedValue) {
+        hp -= attackedValue;
+        System.out.println("Monster hp " + this.hp);
     }
 
-	public boolean isAlive() {
-        if(hp<=0)
-        {
-            world.put(new Floor(world),posX,posY);
+    public boolean isAlive() {
+        if (hp <= 0) {
+            world.put(new Floor(world), posX, posY);
             return false;
-        }    
+        }
         return true;
-	}
+    }
 
 }

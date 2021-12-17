@@ -70,7 +70,7 @@ public class Goblin extends Creature implements Runnable {
         int[] yMove = { 0, 1, 0, -1 };
         Random r = new Random();
         int dir = r.nextInt(4);
-        while (hp >= 0) {
+        while (hp > 0 && !sig.getStopBit()) {
             try {
                 int nextX = curX + xMove[dir];
                 int nextY = curY + yMove[dir];
@@ -91,7 +91,10 @@ public class Goblin extends Creature implements Runnable {
                 e.printStackTrace();
             }
         }
-        world.put(new Floor(world),curX,curY);
+        if(hp<=0){
+            world.put(new Floor(world),curX,curY);
+        }
+        
     }
 
 }

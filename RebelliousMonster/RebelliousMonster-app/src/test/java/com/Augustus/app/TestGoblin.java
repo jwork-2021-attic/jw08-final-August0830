@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import com.Augustus.app.com.anish.calabashbros.Goblin;
 import com.Augustus.app.com.anish.calabashbros.Monster;
+import com.Augustus.app.com.anish.calabashbros.Signal;
 import com.Augustus.app.com.anish.calabashbros.World;
 
 import org.junit.Test;
@@ -43,4 +44,18 @@ public class TestGoblin {
         assertTrue(gob2.isAlive()==true);
         assertTrue(mon.isAlive()==false);
     }
+
+    @Test
+    public void testStopBit(){
+        Signal sig=new Signal();
+        World world=new World();
+        Goblin c = new Goblin(Color.WHITE,world,10);
+        c.setStopSig(sig);
+        System.out.println(c.getStopSig().getStopBit());
+        assertTrue(c.getStopSig().getStopBit()==false);
+        sig.setStopBit(true);
+        System.out.println(c.getStopSig().getStopBit());
+        assertTrue(c.getStopSig().getStopBit()==true);
+    }
+
 }

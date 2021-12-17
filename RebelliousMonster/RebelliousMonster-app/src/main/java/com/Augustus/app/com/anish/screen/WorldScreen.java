@@ -10,6 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.Augustus.app.asciiPanel.AsciiPanel;
 import com.Augustus.app.com.anish.calabashbros.Goblin;
 import com.Augustus.app.com.anish.calabashbros.Monster;
+import com.Augustus.app.com.anish.calabashbros.Signal;
 import com.Augustus.app.com.anish.calabashbros.Stone;
 import com.Augustus.app.com.anish.calabashbros.World;
 
@@ -20,6 +21,7 @@ public class WorldScreen implements Screen {
     public static final int GOBCNT = 10;
     String[] sortSteps;
     ArrayList<Thread> gobThreads;
+    Signal sig;
 
     // ArrayList<Thread>
     public WorldScreen() {
@@ -41,6 +43,7 @@ public class WorldScreen implements Screen {
             }
         }
 
+        sig=new Signal();
         gobThreads = new ArrayList<Thread>();
         keyMessage = new LinkedBlockingQueue<KeyEvent>();
         Random r = new Random();
@@ -49,13 +52,16 @@ public class WorldScreen implements Screen {
             int blue = (r.nextInt(255) + 255) / 2;
             int green = (r.nextInt(255) + 255) / 2;
             Goblin gob = new Goblin(new Color(red, green, blue), world, 50);
+            gob.setStopSig(sig);
             // hero = new Calabash(new Color(red,green,blue),1,world);
             // world.put(hero,0,startList.get(r.nextInt(startList.size())));
             gobThreads.add(new Thread(gob));
             gobThreads.get(i).start();
         }
 
+        
         Monster monster = new Monster(world, 50);
+        monster.setStopSig(sig);
         monster.setReceiver(keyMessage);
         Thread LocalMonster = new Thread(monster);
         LocalMonster.start();
@@ -77,6 +83,15 @@ public class WorldScreen implements Screen {
     @Override
     public Screen respondToUserInput(KeyEvent key) {
         try {
+            if(key.getKeyCode()==KeyEvent.VK_SPACE){
+                if(sig.getStopBit()==false)
+                    sig.setStopBit(true);
+                else{
+                    for(Thread t:gobThreads)
+                        t.run();
+                }
+            }
+
             keyMessage.put(key);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block

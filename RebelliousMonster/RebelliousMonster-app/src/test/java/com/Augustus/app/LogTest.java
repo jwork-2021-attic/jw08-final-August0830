@@ -88,6 +88,11 @@ public class LogTest {
     }
 }
 
+class CounterState implements Serializable{
+    ArrayList<Counter> counters;
+    
+}
+
 class Counter extends Thread implements Serializable {
     /**
      *
