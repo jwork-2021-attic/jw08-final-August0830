@@ -12,6 +12,13 @@ public class Monster extends Creature implements Runnable {
     private Stone stone;
     BlockingQueue<KeyEvent> keyMessage;
 
+    public Monster(World world,int hp,int x,int y){
+        super(Color.WHITE, (char) 2, world, hp);
+        posX=x;
+        posY=y;
+        this.world.put(this, posX, posY);
+    }
+
     public Monster(World world, int hp) {
         super(Color.WHITE, (char) 2, world, hp);
 
@@ -100,7 +107,8 @@ public class Monster extends Creature implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
         // System.out.println("monster "+hp);
-        while (hp > 0 && !sig.getStopBit()) {
+        world.put(this,getX(),getY());
+        while (hp > 0 && !sig.getStopBit() && !sig.getGameEnd()) {
             KeyEvent key;
             while ((key = keyMessage.poll()) != null) {
                 int code = key.getKeyCode();
@@ -118,6 +126,7 @@ public class Monster extends Creature implements Runnable {
         if (hp <= 0) {
             System.out.println("Monster dead!");
             world.put(new Floor(world), posX, posY);// dead and clean
+            sig.decreaseMon();
         }
 
     }

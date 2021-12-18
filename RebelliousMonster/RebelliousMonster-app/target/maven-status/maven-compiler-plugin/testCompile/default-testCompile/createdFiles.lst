@@ -1,6 +1,7 @@
-com/Augustus/app/TestByteUtil.class
 com/Augustus/app/AppTest.class
 com/Augustus/app/TestStone.class
-com/Augustus/app/TestMonster.class
 com/Augustus/app/TestGoblin.class
+com/Augustus/app/TestByteUtil.class
+com/Augustus/app/TestMonster.class
 com/Augustus/app/TestClass.class
+com/Augustus/TestMapGen.class

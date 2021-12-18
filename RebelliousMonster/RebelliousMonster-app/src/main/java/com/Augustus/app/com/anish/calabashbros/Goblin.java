@@ -8,6 +8,13 @@ public class Goblin extends Creature implements Runnable {
     int curX;
     int curY;
 
+    public Goblin (Color color,World world,int hp,int x,int y){
+        super(color, (char) 1, world, hp);
+        curX=x;
+        curY=y;
+        this.world.put(this, curX, curY);
+    }
+    
     public Goblin(Color color, World world,int hp) {
         // Random r = new Random();
         // int red = (r.nextInt(255)+255)/2;
@@ -70,7 +77,7 @@ public class Goblin extends Creature implements Runnable {
         int[] yMove = { 0, 1, 0, -1 };
         Random r = new Random();
         int dir = r.nextInt(4);
-        while (hp > 0 && !sig.getStopBit()) {
+        while (hp > 0 && !sig.getStopBit() && !sig.getGameEnd()) {
             try {
                 int nextX = curX + xMove[dir];
                 int nextY = curY + yMove[dir];
@@ -93,6 +100,7 @@ public class Goblin extends Creature implements Runnable {
         }
         if(hp<=0){
             world.put(new Floor(world),curX,curY);
+            sig.decreaseGob();
         }
         
     }

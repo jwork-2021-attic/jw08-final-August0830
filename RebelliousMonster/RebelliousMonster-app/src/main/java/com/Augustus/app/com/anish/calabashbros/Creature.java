@@ -11,6 +11,10 @@ public class Creature extends Thing {
 
     }
 
+    public int getHp(){
+        return hp;
+    }
+
     public void setStopSig(Signal stop){
         this.sig=stop;
     }
