@@ -2,12 +2,14 @@ package com.Augustus.app;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
 import com.Augustus.app.asciiPanel.AsciiFont;
 import com.Augustus.app.asciiPanel.AsciiPanel;
 import com.Augustus.app.com.anish.calabashbros.World;
+import com.Augustus.app.com.anish.network.Server;
 import com.Augustus.app.com.anish.screen.Screen;
 import com.Augustus.app.com.anish.screen.WorldScreen;
 
@@ -22,14 +24,13 @@ public class Main extends JFrame implements KeyListener {
 
     public Main() throws InterruptedException {
         super();
-        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT+10, AsciiFont.TALRYTH_15_15);
-        //屏幕设置 ui可以在这里更改 以及屏幕大小
+        terminal = new AsciiPanel(World.WIDTH, World.HEIGHT + 10, AsciiFont.TALRYTH_15_15);
+        // 屏幕设置 ui可以在这里更改 以及屏幕大小
         add(terminal);
         pack();
         screen = new WorldScreen();
         addKeyListener(this);
-        
- 
+
     }
 
     @Override
@@ -55,10 +56,11 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Main app = new Main();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
+        //new Server("localhost").startServer();
         while(true){
             app.repaint();
             //System.out.println("paint");

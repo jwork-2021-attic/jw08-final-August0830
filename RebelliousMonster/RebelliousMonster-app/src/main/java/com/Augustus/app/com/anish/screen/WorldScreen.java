@@ -55,7 +55,7 @@ public class WorldScreen implements Screen {
             load = sc.next();
         }
         sc.close();
-        System.out.println(load);
+        //System.out.println(load);
         if (load.equals("y")) {
             try {
                 mapgen.resetMap(world);
@@ -65,6 +65,8 @@ public class WorldScreen implements Screen {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+        else{
             System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
             // int[][] data = mapgen
             // .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
@@ -80,15 +82,16 @@ public class WorldScreen implements Screen {
                 // world.put(hero,0,startList.get(r.nextInt(startList.size())));
                 gobThreads.add(gob);
             }
-
             localMonster = new Monster(world, 50);
         }
+            
+
 
         for (Goblin gob : gobThreads) {
             gob.setStopSig(sig);
             new Thread(gob).start();
         }
-
+        
         localMonster.setStopSig(sig);
         localMonster.setReceiver(keyMessage);
         new Thread(localMonster).start();
