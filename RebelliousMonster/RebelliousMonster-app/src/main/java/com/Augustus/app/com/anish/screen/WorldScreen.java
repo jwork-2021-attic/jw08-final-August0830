@@ -26,7 +26,7 @@ import com.Augustus.app.com.anish.calabashbros.World;
 public class WorldScreen implements Screen {
 
     private World world;
-    BlockingQueue<KeyEvent> keyMessage;
+    BlockingQueue<Integer> keyMessage;
     public static final int GOBCNT = 10;
     String[] sortSteps;
     ArrayList<Goblin> gobThreads;
@@ -45,7 +45,7 @@ public class WorldScreen implements Screen {
         sig.setGobCnt(GOBCNT);
 
         gobThreads = new ArrayList<Goblin>();
-        keyMessage = new LinkedBlockingQueue<KeyEvent>();
+        keyMessage = new LinkedBlockingQueue<Integer>();
 
         mapgen = new MapGenerator(width, height);
         System.out.println("load previous map? y or n");
@@ -138,7 +138,7 @@ public class WorldScreen implements Screen {
                 }
             }
 
-            keyMessage.put(key);
+            keyMessage.put(key.getKeyCode());
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.Augustus.TestMapGen
--------------------------------------------------------------------------------
-Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.415 s <<< FAILURE! - in com.Augustus.TestMapGen
-testReset(com.Augustus.TestMapGen)  Time elapsed: 0.33 s  <<< FAILURE!
-java.lang.AssertionError
-	at com.Augustus.TestMapGen.testReset(TestMapGen.java:67)
-

@@ -10,7 +10,7 @@ public class Monster extends Creature implements Runnable {
     private int posX;
     private int posY;
     private Stone stone;
-    BlockingQueue<KeyEvent> keyMessage;
+    BlockingQueue<Integer> keyMessage;
 
     public Monster(World world,int hp,int x,int y){
         super(Color.WHITE, (char) 2, world, hp);
@@ -33,12 +33,12 @@ public class Monster extends Creature implements Runnable {
         this.world.put(this, posX, posY);
     }
 
-    public void setReceiver(BlockingQueue<KeyEvent> keyMessage) {
+    public void setReceiver(BlockingQueue<Integer> keyMessage) {
         this.keyMessage = keyMessage;
     }
 
-    public synchronized void move(KeyEvent key) {
-        int keycode = key.getKeyCode();
+    public synchronized void move(int keycode) {
+        //int keycode = key.getKeyCode();
         int[][] action = { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };// left up right down
         int[] step = action[keycode - 37];
         int nxtX = step[0] + posX;
@@ -52,19 +52,19 @@ public class Monster extends Creature implements Runnable {
         }
     }
 
-    public synchronized void getStone(KeyEvent key) {
+    public synchronized void getStone(int key) {
         if (stone != null)
             return;
         int[][] action = { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };
         // left up right down
         int dir;
-        if (key.getKeyCode() == KeyEvent.VK_W)
+        if (key == KeyEvent.VK_W)
             dir = 1;
-        else if (key.getKeyCode() == KeyEvent.VK_D)
+        else if (key == KeyEvent.VK_D)
             dir = 2;
-        else if (key.getKeyCode() == KeyEvent.VK_S)
+        else if (key == KeyEvent.VK_S)
             dir = 3;
-        else if (key.getKeyCode() == KeyEvent.VK_A)
+        else if (key == KeyEvent.VK_A)
             dir = 0;
         else
             return;
@@ -83,16 +83,16 @@ public class Monster extends Creature implements Runnable {
         return stone == null;
     }
 
-    public void pushStone(KeyEvent key) {
+    public void pushStone(int key) {
         int[][] action = { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };
         // left up right down
-        if (key.getKeyCode() == KeyEvent.VK_A)
+        if (key == KeyEvent.VK_A)
             stone.setDir(action[0]);
-        else if (key.getKeyCode() == KeyEvent.VK_W)
+        else if (key == KeyEvent.VK_W)
             stone.setDir(action[1]);
-        else if (key.getKeyCode() == KeyEvent.VK_D)
+        else if (key == KeyEvent.VK_D)
             stone.setDir(action[2]);
-        else if (key.getKeyCode() == KeyEvent.VK_S)
+        else if (key == KeyEvent.VK_S)
             stone.setDir(action[3]);
         else
             return;
@@ -109,16 +109,16 @@ public class Monster extends Creature implements Runnable {
         // System.out.println("monster "+hp);
         world.put(this,getX(),getY());
         while (hp > 0 && !sig.getStopBit() && !sig.getGameEnd()) {
-            KeyEvent key;
+            Integer key;
             while ((key = keyMessage.poll()) != null) {
-                int code = key.getKeyCode();
-                if (code == KeyEvent.VK_W || code == KeyEvent.VK_A || code == KeyEvent.VK_S || code == KeyEvent.VK_D) {
+                //int code = key.getKeyCode();
+                if (key == KeyEvent.VK_W || key == KeyEvent.VK_A || key == KeyEvent.VK_S || key == KeyEvent.VK_D) {
                     if (stone != null)
                         pushStone(key);
                     else
                         getStone(key);
-                } else if (code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN || code == KeyEvent.VK_LEFT
-                        || code == KeyEvent.VK_RIGHT) {
+                } else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_LEFT
+                        || key == KeyEvent.VK_RIGHT) {
                     move(key);
                 }
             }

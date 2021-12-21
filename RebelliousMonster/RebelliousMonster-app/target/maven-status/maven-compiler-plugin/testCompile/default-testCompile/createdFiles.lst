@@ -1,7 +1,13 @@
+com/Augustus/app/LogTest.class
 com/Augustus/app/AppTest.class
 com/Augustus/app/TestStone.class
+com/Augustus/app/CounterState.class
+com/Augustus/app/Counter.class
 com/Augustus/app/TestGoblin.class
+com/Augustus/app/AppendingObjectOutputStream.class
 com/Augustus/app/TestByteUtil.class
+com/Augustus/app/TestCreature.class
+com/Augustus/app/TestSignal.class
 com/Augustus/app/TestMonster.class
 com/Augustus/app/TestClass.class
-com/Augustus/TestMapGen.class
+com/Augustus/app/AppendableObjectOutputStream.class
