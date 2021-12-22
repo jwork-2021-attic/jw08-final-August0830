@@ -57,15 +57,16 @@ public class Main extends JFrame implements KeyListener {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        Main app = new Main();
-        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        app.setVisible(true);
-        //new Server("localhost").startServer();
-        while(true){
-            app.repaint();
-            //System.out.println("paint");
-            Thread.sleep(500);
-        }
+        new Server("localhost").startServer();
+        
+        // Main app = new Main();
+        // app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // app.setVisible(true);
+        
+        //     app.repaint();
+        //     //System.out.println("paint");
+        //     Thread.sleep(500);
+        // }
     }
 
 }
