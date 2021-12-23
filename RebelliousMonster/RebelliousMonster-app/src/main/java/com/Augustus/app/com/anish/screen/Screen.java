@@ -9,4 +9,8 @@ public interface Screen {
     public void displayOutput(AsciiPanel terminal);
 
     public Screen respondToUserInput(KeyEvent key);
+
+    //public String displayInfo(int x,int y);
+
+    public int[] displayInfo(int x,int y);
 }

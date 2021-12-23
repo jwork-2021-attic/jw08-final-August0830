@@ -30,7 +30,7 @@ public class Main extends JFrame implements KeyListener {
         pack();
         screen = new WorldScreen();
         addKeyListener(this);
-
+        
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Main extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        screen = screen.respondToUserInput(e);
+         screen = screen.respondToUserInput(e);
         repaint();
     }
 
@@ -56,17 +56,27 @@ public class Main extends JFrame implements KeyListener {
 
     }
 
+    public Screen getScreenInfo(){
+        return screen;       
+    }
+
     public static void main(String[] args) throws InterruptedException, IOException {
-        new Server("localhost").startServer();
+        Main app = new Main();
+        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        app.setVisible(true);
+        app.repaint();
+        Server s =new Server("localhost");
+        s.getScreen(app);
+        //s.run();
         
-        // Main app = new Main();
-        // app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // app.setVisible(true);
         
-        //     app.repaint();
-        //     //System.out.println("paint");
-        //     Thread.sleep(500);
-        // }
+        while(true){
+            app.repaint();
+            //System.out.println("paint");
+            Thread.sleep(500);
+        }
+            
+        
     }
 
 }

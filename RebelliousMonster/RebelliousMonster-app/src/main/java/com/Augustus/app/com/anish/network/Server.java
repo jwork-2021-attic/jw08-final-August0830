@@ -14,10 +14,16 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Server {
+import com.Augustus.app.Main;
+import com.Augustus.app.com.anish.calabashbros.World;
+import com.Augustus.app.com.anish.screen.Screen;
+
+
+public class Server extends Thread {
     Selector selector;
     InetSocketAddress listenAddress;
     final static int PORT = 9093;
+    Screen screen;
 
     // public static void main(String[] args) throws IOException{
     // new Server("localhost").startServer();
@@ -27,18 +33,29 @@ public class Server {
         listenAddress = new InetSocketAddress(addr, PORT);
     }
 
-    public void startServer() throws IOException {
-        this.selector = Selector.open();
-        ServerSocketChannel serverChannel = ServerSocketChannel.open();
-        serverChannel.configureBlocking(false);
+    public void run() {
+        try {
+            this.selector = Selector.open();
+            ServerSocketChannel serverChannel = ServerSocketChannel.open();
+            serverChannel.configureBlocking(false);
 
-        serverChannel.socket().bind(listenAddress);
-        serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+            serverChannel.socket().bind(listenAddress);
+            serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         System.out.println("Server started on: " + PORT);
 
         while (true) {
-            int readyCnt = selector.select();
+            int readyCnt=0;
+            try {
+                readyCnt = selector.select();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if (readyCnt == 0)
                 continue;
 
@@ -53,9 +70,19 @@ public class Server {
                     continue;
 
                 if (key.isAcceptable()) {
-                    this.accept(key);
+                    try {
+                        this.accept(key);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } else if (key.isReadable()) {
-                    this.read(key);
+                    try {
+                        this.read(key);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } else if (key.isWritable()) {
                     // this.write(key);
                 }
@@ -98,23 +125,33 @@ public class Server {
         buffer.clear();
         // copy bit data
         String info = new String(data);
-        if (info.charAt(0) == '1') {
+        if (info.charAt(0) == '0') {
             sendScreen(key, info.substring(1));
         } else {
             // process keypress of client
         }
-    System.out.println("Got: "+info);
-    // output as string
+        System.out.println("Got: " + info);
+        // output as string
 
     }
 
     private void sendScreen(SelectionKey key, String str) throws IOException {
         SocketChannel ch = (SocketChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
-        buffer.put(str.getBytes());
-        buffer.flip();
-        ch.write(buffer);
         System.out.println("Server respond: " + str);
-        buffer.clear();
+        for(int x=0;x<World.WIDTH;++x){
+            for(int y=0;y<World.HEIGHT;++y){
+                ByteBuffer buffer = ByteBuffer.allocate(24);
+                int[] info = screen.displayInfo(x, y);
+                for(int i:info)
+                    buffer.putInt(i);
+                buffer.flip();
+                ch.write(buffer);
+                buffer.clear();
+            }
+        }
+    }
+
+    public void getScreen(Main app) {
+        screen = app.getScreenInfo();
     }
 }

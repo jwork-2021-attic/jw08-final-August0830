@@ -48,45 +48,22 @@ public class WorldScreen implements Screen {
         keyMessage = new LinkedBlockingQueue<Integer>();
 
         mapgen = new MapGenerator(width, height);
-        System.out.println("load previous map? y or n");
-        String load = "";
-        Scanner sc = new Scanner(System.in);
-        if (sc.hasNext()) {
-            load = sc.next();
+        System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
+        // int[][] data = mapgen
+        // .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+        mapgen.iniMap(world,
+                WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+        Random r = new Random();
+        for (int i = 0; i < GOBCNT; ++i) {
+            int red = (r.nextInt(255) + 255) / 2;
+            int blue = (r.nextInt(255) + 255) / 2;
+            int green = (r.nextInt(255) + 255) / 2;
+            Goblin gob = new Goblin(new Color(red, green, blue), world, 50);
+            // hero = new Calabash(new Color(red,green,blue),1,world);
+            // world.put(hero,0,startList.get(r.nextInt(startList.size())));
+            gobThreads.add(gob);
         }
-        sc.close();
-        //System.out.println(load);
-        if (load.equals("y")) {
-            try {
-                mapgen.resetMap(world);
-                resetCreature();
-                sig.setStopBit(true);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        else{
-            System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
-            // int[][] data = mapgen
-            // .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
-            mapgen.iniMap(world,
-                    WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
-            Random r = new Random();
-            for (int i = 0; i < GOBCNT; ++i) {
-                int red = (r.nextInt(255) + 255) / 2;
-                int blue = (r.nextInt(255) + 255) / 2;
-                int green = (r.nextInt(255) + 255) / 2;
-                Goblin gob = new Goblin(new Color(red, green, blue), world, 50);
-                // hero = new Calabash(new Color(red,green,blue),1,world);
-                // world.put(hero,0,startList.get(r.nextInt(startList.size())));
-                gobThreads.add(gob);
-            }
-            localMonster = new Monster(world, 50);
-        }
-            
-
-
+        localMonster = new Monster(world, 50);
         for (Goblin gob : gobThreads) {
             gob.setStopSig(sig);
             new Thread(gob).start();
@@ -105,7 +82,7 @@ public class WorldScreen implements Screen {
             for (int y = 0; y < World.HEIGHT; y++) {
 
                 terminal.write(world.get(x, y).getGlyph(), x, y, world.get(x, y).getColor());
-
+                //System.out.println(world.get(x, y).getGlyph()+" "+x+" "+y+" "+world.get(x, y).getColor());
             }
         }
         if (sig.getGameEnd())
@@ -140,8 +117,21 @@ public class WorldScreen implements Screen {
                     new Thread(localMonster).start();
                 }
             }
-
-            keyMessage.put(key.getKeyCode());
+            else if(key.getKeyCode()==KeyEvent.VK_L){
+                try {
+                   
+                    sig.setStopBit(true);
+                    mapgen.resetMap(world);
+                    resetCreature();
+                    //no need to start again  press space to continue
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+            }
+            else
+                keyMessage.put(key.getKeyCode());
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -176,10 +166,22 @@ public class WorldScreen implements Screen {
                 info[index++] = sc.nextInt();
             }
             localMonster = new Monster(world, info[0], info[1], info[2]);
+            localMonster.setStopSig(sig);
+            localMonster.setReceiver(keyMessage);
             sc.close();
         }
         input.close();
 
+        //System.out.println("gobthreadSize: "+gobThreads.size());
+        
+        while(gobThreads.size()>0){
+            Goblin gb = gobThreads.get(0);
+            
+            world.put(new Floor(world),gb.getX(),gb.getY());
+            gobThreads.remove(0);
+            //System.out.println("gobthreadSize: "+gobThreads.size());
+        }
+        //System.out.println("gobthreadSize: "+gobThreads.size());
         File gobFile = new File("./goblin.txt");
         input = new BufferedReader(new FileReader(gobFile));
         Random r = new Random();
@@ -195,9 +197,44 @@ public class WorldScreen implements Screen {
             int blue = (r.nextInt(255) + 255) / 2;
             int green = (r.nextInt(255) + 255) / 2;
             Goblin gob = new Goblin(new Color(red, green, blue), world, info[0], info[1], info[2]);
+            gob.setStopSig(sig);
             gobThreads.add(gob);
             sc.close();
         }
         input.close();
+    }
+
+    @Override
+    // public String displayInfo(int x, int y) {
+    //     // TODO Auto-generated method stub
+    //     Color color = world.get(x, y).getColor();
+    //     int glyphNum = 250;
+    //     if(world.get(x, y) instanceof Stone)
+    //         glyphNum=177;
+    //     else if(world.get(x,y) instanceof Monster)
+    //         glyphNum=2;
+    //     else if(world.get(x,y) instanceof Goblin)
+    //         glyphNum=1;
+    //     String info = new String(glyphNum+" "+x+" "+y+" "+color.getRed()+" "+color.getGreen()+" "+color.getBlue());
+    //     return info;
+    // }
+
+    public int[] displayInfo(int x,int y){
+        int[] info = new int[6];
+        Color color = world.get(x, y).getColor();
+        int glyphNum = 250;
+        if(world.get(x, y) instanceof Stone)
+            glyphNum=177;
+        else if(world.get(x,y) instanceof Monster)
+            glyphNum=2;
+        else if(world.get(x,y) instanceof Goblin)
+            glyphNum=1;
+        info[0]=glyphNum;
+        info[1]=x;
+        info[2]=y;
+        info[3]=color.getRed();
+        info[4]=color.getGreen();
+        info[5]=color.getBlue();
+        return info;
     }
 }
