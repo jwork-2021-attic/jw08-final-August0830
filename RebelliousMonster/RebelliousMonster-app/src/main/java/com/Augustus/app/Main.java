@@ -3,12 +3,15 @@ package com.Augustus.app;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import com.Augustus.app.asciiPanel.AsciiFont;
 import com.Augustus.app.asciiPanel.AsciiPanel;
+import com.Augustus.app.com.anish.calabashbros.Monster;
 import com.Augustus.app.com.anish.calabashbros.World;
+import com.Augustus.app.com.anish.network.MainReactor;
 import com.Augustus.app.com.anish.network.Server;
 import com.Augustus.app.com.anish.screen.Screen;
 import com.Augustus.app.com.anish.screen.WorldScreen;
@@ -60,14 +63,20 @@ public class Main extends JFrame implements KeyListener {
         return screen;       
     }
 
+    public ArrayList<Monster> getClientMonster(){
+        return  screen.getClient();
+    }
+
     public static void main(String[] args) throws InterruptedException, IOException {
         Main app = new Main();
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
         app.repaint();
-        Server s =new Server("localhost");
+        //Server s =new Server("localhost");
+        MainReactor s = new MainReactor("localhost",9093);
         s.getScreen(app);
-        //s.run();
+        s.getClientMonster(app);
+        s.run();
         
         
         while(true){

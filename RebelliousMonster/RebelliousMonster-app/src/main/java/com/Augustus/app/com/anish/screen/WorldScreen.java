@@ -28,8 +28,10 @@ public class WorldScreen implements Screen {
     private World world;
     BlockingQueue<Integer> keyMessage;
     public static final int GOBCNT = 10;
+    public static final int CLIENT = 2;
     String[] sortSteps;
     ArrayList<Goblin> gobThreads;
+    ArrayList<Monster> clientMonster;
     Monster localMonster;
     Signal sig;
     MapGenerator mapgen;
@@ -46,6 +48,7 @@ public class WorldScreen implements Screen {
 
         gobThreads = new ArrayList<Goblin>();
         keyMessage = new LinkedBlockingQueue<Integer>();
+        clientMonster = new ArrayList<Monster>();
 
         mapgen = new MapGenerator(width, height);
         System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
@@ -63,6 +66,13 @@ public class WorldScreen implements Screen {
             // world.put(hero,0,startList.get(r.nextInt(startList.size())));
             gobThreads.add(gob);
         }
+
+        for(int i=0;i<CLIENT;++i){
+            Monster mon = new Monster(world,50);
+            mon.setStopSig(sig);
+            clientMonster.add(mon);
+        }
+
         localMonster = new Monster(world, 50);
         for (Goblin gob : gobThreads) {
             gob.setStopSig(sig);
@@ -236,5 +246,11 @@ public class WorldScreen implements Screen {
         info[4]=color.getGreen();
         info[5]=color.getBlue();
         return info;
+    }
+
+    @Override
+    public ArrayList<Monster> getClient() {
+        // TODO Auto-generated method stub
+        return clientMonster;
     }
 }

@@ -37,6 +37,9 @@ public class Monster extends Creature implements Runnable {
         this.keyMessage = keyMessage;
     }
 
+    public BlockingQueue<Integer> getReceiver(){
+        return keyMessage;
+    }
     public synchronized void move(int keycode) {
         //int keycode = key.getKeyCode();
         int[][] action = { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };// left up right down

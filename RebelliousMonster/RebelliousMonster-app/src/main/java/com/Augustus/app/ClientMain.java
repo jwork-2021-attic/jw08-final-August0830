@@ -7,18 +7,14 @@ import java.awt.Color;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.Scanner;
 
-import javax.crypto.KeyAgreement;
+
 import javax.swing.JFrame;
 
 import com.Augustus.app.asciiPanel.AsciiFont;
 import com.Augustus.app.asciiPanel.AsciiPanel;
 import com.Augustus.app.com.anish.calabashbros.World;
-import com.Augustus.app.com.anish.network.Client;
-import com.Augustus.app.com.anish.network.Server;
-import com.Augustus.app.com.anish.screen.ClientScreen;
-import com.Augustus.app.com.anish.screen.Screen;
+
 
 public class ClientMain extends JFrame implements KeyListener {
     private static final long serialVersionUID = 1L;
@@ -88,7 +84,17 @@ public class ClientMain extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         // send to server
-
+        String request = new String("1 "+e.getKeyCode());
+        ByteBuffer buffer = ByteBuffer.allocate(74);
+        buffer.put(request.getBytes());
+        buffer.flip();
+        try {
+            channel.write(buffer);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        buffer.clear();
     }
 
     @Override

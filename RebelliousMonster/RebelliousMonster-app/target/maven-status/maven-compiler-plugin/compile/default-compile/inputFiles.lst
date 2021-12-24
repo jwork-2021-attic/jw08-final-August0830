@@ -3,11 +3,14 @@
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Tile.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/screen/MapGenerator.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Goblin.java
+/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/network/Server.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/asciiPanel/AsciiCharacterData.java
+/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/screen/ClientScreen.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/screen/Screen.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Creature.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Stone.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Thing.java
+/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/ClientMain.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Wall.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/asciiPanel/AsciiPanel.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/screen/WorldScreen.java
@@ -18,3 +21,4 @@
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Monster.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/asciiPanel/AsciiFont.java
 /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/calabashbros/Signal.java
+/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/src/main/java/com/Augustus/app/com/anish/network/Client.java
