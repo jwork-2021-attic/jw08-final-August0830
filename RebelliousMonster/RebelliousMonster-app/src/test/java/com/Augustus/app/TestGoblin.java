@@ -29,16 +29,22 @@ public class TestGoblin {
     @Test
     public void testAttack(){
         World world =  new World();
+        Signal sig=new Signal();
         Goblin gob1 = new Goblin(Color.WHITE,world,10);
         Goblin gob2 = new Goblin(Color.WHITE,world,10);
-        Monster mon = new Monster(world,10);
+        
         world.put(gob1,gob1.getX(),gob1.getY());
         world.put(gob2,gob2.getX(),gob2.getY());
-        world.put(mon,mon.getX(),mon.getY());
+        gob1.setStopSig(sig);
+        gob2.setStopSig(sig);
+        
         int xPos=gob1.getX();
         int yPos=gob1.getY();
         gob2.moveTo(xPos+1, yPos);
-        mon.moveTo(xPos, yPos-1);
+        //mon.moveTo(xPos, yPos-1);
+        Monster mon = new Monster(world,10,xPos,yPos-1);
+        mon.setStopSig(sig);
+        
         gob1.attack(15);
         System.out.println(gob2.isAlive()+" "+mon.isAlive());
         assertTrue(gob2.isAlive()==true);

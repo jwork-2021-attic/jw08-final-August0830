@@ -45,7 +45,7 @@ public class ClientMain extends JFrame implements KeyListener {
             e1.printStackTrace();
         }
         buffer.clear();
-
+        buffer.flip();
         for (int i = 0; i < World.HEIGHT * World.WIDTH; ++i) {
             buffer = ByteBuffer.allocate(24);
             int numRead = -1;

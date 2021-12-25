@@ -17,7 +17,7 @@ import com.Augustus.app.com.anish.screen.Screen;
 
 public class Handler implements Runnable {
     private static final int MAX_IN = 1024;
-    private static final int MAX_OUT = 1024;
+    private static final int MAX_OUT = 4096;
 
     private static final int cores = Runtime.getRuntime().availableProcessors();
 
@@ -30,7 +30,8 @@ public class Handler implements Runnable {
 
     private static ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
 
-    public Handler(SocketChannel socket, Selector sel, BlockingQueue<Integer> keyMessage,Screen screen) throws IOException {
+    public Handler(SocketChannel socket, Selector sel, BlockingQueue<Integer> keyMessage, Screen screen)
+            throws IOException {
         this.socket = socket;
         this.keyMessage = keyMessage;
         this.screen = screen;
@@ -47,28 +48,30 @@ public class Handler implements Runnable {
     // }
 
     // private void process() {
-    //     input.flip();
-    //     System.out.println(Thread.currentThread().getName() + "------process------");
-    //     byte[] bytes = new byte[input.limit()];
-    //     input.get(bytes);
-    //     input.clear();
-    //     String str = new String(bytes);
-    //     System.out.println(str);
-    //     output.put(("received---" + str).getBytes());
-    //     output.flip();
+    // input.flip();
+    // System.out.println(Thread.currentThread().getName() + "------process------");
+    // byte[] bytes = new byte[input.limit()];
+    // input.get(bytes);
+    // input.clear();
+    // String str = new String(bytes);
+    // System.out.println(str);
+    // output.put(("received---" + str).getBytes());
+    // output.flip();
 
     // }
 
     private void sendScreen(ByteBuffer buffer) throws IOException {
         System.out.println("Server send screen");
-        for(int x=0;x<World.WIDTH;++x){
-            for(int y=0;y<World.HEIGHT;++y){
+        for (int x = 0; x < World.WIDTH; ++x) {
+            for (int y = 0; y < World.HEIGHT; ++y) {
                 int[] info = screen.displayInfo(x, y);
-                for(int i:info)
+                for (int i : info) {
                     buffer.putInt(i);
-                buffer.flip();
+                    System.out.println(i);
+                }
             }
         }
+        buffer.flip();
     }
 
     @Override
@@ -89,7 +92,7 @@ public class Handler implements Runnable {
         // process();
         // register write io event and interested.
         input.flip();
-        System.out.println(Thread.currentThread().getName() + "------process------");
+        //System.out.println(Thread.currentThread().getName() + "------process------");
         byte[] bytes = new byte[input.limit()];
         input.get(bytes);
         input.clear();
@@ -99,6 +102,7 @@ public class Handler implements Runnable {
             sk.interestOps(SelectionKey.OP_WRITE);
             // wakeup all threads which interesting this io event.
             sk.selector().wakeup();
+
         } else if (str.charAt(0) == '1') {
             Scanner sc = new Scanner(str.substring(0));
             while (sc.hasNextInt()) {
@@ -125,8 +129,23 @@ public class Handler implements Runnable {
         @Override
         public void run() {
             try {
-                sendScreen(output);
-                socket.write(output);
+                // Handler.this.sendScreen(output);
+
+                //System.out.println("Server send screen");
+                for (int x = 0; x < World.WIDTH; ++x) {
+                    for (int y = 0; y < World.HEIGHT; ++y) {
+                        int[] info = screen.displayInfo(x, y);
+                        for (int i : info) {
+                            output.putInt(i);
+                            // System.out.println(i);
+                        }
+                        output.flip();
+                        socket.write(output);
+                        output.flip();
+                    }
+                }
+                // output.flip();
+                // socket.write(output);
                 output.clear();
                 sk.interestOps(SelectionKey.OP_READ);
                 sk.attach(Handler.this);

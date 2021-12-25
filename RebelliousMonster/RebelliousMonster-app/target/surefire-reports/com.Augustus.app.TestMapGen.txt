@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.Augustus.app.TestMapGen
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in com.Augustus.app.TestMapGen
-testSave(com.Augustus.app.TestMapGen)  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.Augustus.app.TestMapGen.testSave(TestMapGen.java:23)
-

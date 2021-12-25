@@ -33,6 +33,7 @@ public class MainReactor implements Runnable{
     private int next = 0;
     ArrayList<Monster> clientMonster;
     Screen screen;
+    Main app;
     // public static void main(String[] args) throws IOException {
     //     new MainReactor(9093,).run();
     // check before call mainReactor
@@ -54,6 +55,7 @@ public class MainReactor implements Runnable{
 
     public boolean getScreen(Main app){
         screen = app.getScreenInfo();
+        this.app = app;
         return screen != null;
     }
 
@@ -74,9 +76,9 @@ public class MainReactor implements Runnable{
                 }
                 
                 selected.clear();
+
             }
         } catch (IOException ignored){
-
         }
     }
 
@@ -91,17 +93,18 @@ public class MainReactor implements Runnable{
         @Override
         public synchronized void run() {
             try {
-                System.out.println("MainReactor dispatch");
+                //System.out.println("MainReactor dispatch");
                 BlockingQueue<Integer> keyMessage = new LinkedBlockingQueue<Integer>();
                 for(int i=0;i<clientMonster.size();++i){
                     if(clientMonster.get(i).getReceiver()==null){
                         clientMonster.get(i).setReceiver(keyMessage);
+                        new Thread(clientMonster.get(i)).start();
                         break;
                     }
                 }
                 SocketChannel c = serverSocket.accept();
                 if (c != null) {
-                    SubReactor subReactor = new SubReactor(c, selectors[next],keyMessage);
+                    SubReactor subReactor = new SubReactor(c, selectors[next],keyMessage,screen);
                     pool.execute(subReactor);
                 }
                 if (++next == selectors.length) {

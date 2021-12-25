@@ -14,11 +14,12 @@ public class SubReactor implements Runnable {
     private final Selector selector;
     private final BlockingQueue<Integer> keyMessage;
     Screen screen;
-    public SubReactor(SocketChannel socket, Selector sel,BlockingQueue<Integer> keyMessage) throws IOException {
+    public SubReactor(SocketChannel socket, Selector sel,BlockingQueue<Integer> keyMessage,Screen screen) throws IOException {
         this.socket = socket;
         this.selector = sel;
         this.keyMessage = keyMessage;
         socket.configureBlocking(false);
+        this.screen = screen;
         // register read io event and interested.
         socket.register(sel, SelectionKey.OP_READ, new Handler(this.socket, sel,keyMessage,screen));
         // wakeup all threads which interesting this io event.
@@ -35,7 +36,7 @@ public class SubReactor implements Runnable {
                 for (SelectionKey key : selected) {
                     Runnable handler = (Runnable) key.attachment();
                     if (handler != null) {
-                        //System.out.println("hander")
+                        //System.out.println("hander");
                         handler.run();
                     }
                 }

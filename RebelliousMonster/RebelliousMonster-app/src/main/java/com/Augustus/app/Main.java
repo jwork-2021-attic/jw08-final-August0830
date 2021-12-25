@@ -76,11 +76,12 @@ public class Main extends JFrame implements KeyListener {
         MainReactor s = new MainReactor("localhost",9093);
         s.getScreen(app);
         s.getClientMonster(app);
-        s.run();
-        
+        Thread t = new Thread(s);
+        t.start();
         
         while(true){
             app.repaint();
+            
             //System.out.println("paint");
             Thread.sleep(500);
         }

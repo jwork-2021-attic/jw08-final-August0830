@@ -30,7 +30,7 @@ public class Monster extends Creature implements Runnable {
             posY = r.nextInt(world.getHeight());
         } while (posX < 0 || posY < 0 || !(world.get(posX, posY) instanceof Floor));
         // posX=5; posY=14;
-        this.world.put(this, posX, posY);
+        
     }
 
     public void setReceiver(BlockingQueue<Integer> keyMessage) {
@@ -110,6 +110,7 @@ public class Monster extends Creature implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
         // System.out.println("monster "+hp);
+        this.world.put(this, posX, posY);
         world.put(this,getX(),getY());
         while (hp > 0 && !sig.getStopBit() && !sig.getGameEnd()) {
             Integer key;

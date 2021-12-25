@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.Augustus.app.AppTest" time="0.001" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.Augustus.app.AppTest" time="0" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="gnome"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire/surefirebooter15096275513241363017.jar /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire 2021-12-24T18-45-09_806-jvmRun1 surefire4062619735922006138tmp surefire_016878427717890967603tmp"/>
+    <property name="sun.java.command" value="/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire/surefirebooter13245189767258750484.jar /home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire 2021-12-25T21-56-40_633-jvmRun1 surefire1358315832392070621tmp surefire_09559712158709039340tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/test-classes:/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/classes:/home/njucs/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/njucs/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -32,7 +32,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire/surefirebooter15096275513241363017.jar"/>
+    <property name="surefire.real.class.path" value="/home/njucs/Java/jw05-August0830/RebelliousMonster/RebelliousMonster-app/target/surefire/surefirebooter13245189767258750484.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.11+9-Ubuntu-0ubuntu2.18.04"/>
     <property name="user.name" value="njucs"/>

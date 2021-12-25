@@ -29,6 +29,7 @@ public class WorldScreen implements Screen {
     BlockingQueue<Integer> keyMessage;
     public static final int GOBCNT = 10;
     public static final int CLIENT = 2;
+    public static final int monHP = 1000;
     String[] sortSteps;
     ArrayList<Goblin> gobThreads;
     ArrayList<Monster> clientMonster;
@@ -51,11 +52,11 @@ public class WorldScreen implements Screen {
         clientMonster = new ArrayList<Monster>();
 
         mapgen = new MapGenerator(width, height);
-        System.out.println(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources"));
+        System.out.println(WorldScreen.class.getClassLoader().getResource(""));
         // int[][] data = mapgen
         // .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
         mapgen.iniMap(world,
-                WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
+                WorldScreen.class.getClassLoader().getResource("NJUCS.bmp"));
         Random r = new Random();
         for (int i = 0; i < GOBCNT; ++i) {
             int red = (r.nextInt(255) + 255) / 2;
@@ -68,12 +69,12 @@ public class WorldScreen implements Screen {
         }
 
         for(int i=0;i<CLIENT;++i){
-            Monster mon = new Monster(world,50);
+            Monster mon = new Monster(world,monHP);
             mon.setStopSig(sig);
             clientMonster.add(mon);
         }
 
-        localMonster = new Monster(world, 50);
+        localMonster = new Monster(world, monHP);
         for (Goblin gob : gobThreads) {
             gob.setStopSig(sig);
             new Thread(gob).start();
