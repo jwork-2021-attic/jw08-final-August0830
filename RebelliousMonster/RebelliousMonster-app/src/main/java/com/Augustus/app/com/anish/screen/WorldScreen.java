@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,8 +56,8 @@ public class WorldScreen implements Screen {
         System.out.println(WorldScreen.class.getClassLoader().getResource(""));
         // int[][] data = mapgen
         // .getData(WorldScreen.class.getClassLoader().getResource("com/Augustus/app/resources/NJUCS.bmp"));
-        mapgen.iniMap(world,
-                WorldScreen.class.getClassLoader().getResource("NJUCS.bmp"));
+        InputStream input  = WorldScreen.class.getClassLoader().getResourceAsStream("NJUCS.bmp");
+        mapgen.iniMap(world,input);
         Random r = new Random();
         for (int i = 0; i < GOBCNT; ++i) {
             int red = (r.nextInt(255) + 255) / 2;
